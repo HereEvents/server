@@ -1,17 +1,20 @@
-require('dotenv').config()
-
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT
+require("dotenv").config();
 require("./DL/db").connect();
+const mainRouter = require("./Routes");
+const express = require("express");
+const app = express();
+const PORT = process.env.PORT || 2000;
+const cors = require("cors");
+app.use(express.json());
+app.use(cors());
+app.use("/static",express.static("./upload"))
 
-const cors = require("cors")
+app.use("/api", mainRouter);
 
-app.use(cors())
-app.use(express.json())
 
-app.use('/event', require('./Routes/event.route'))
-
+// app.get("/k",(req,res)=>{
+// res.send("hello world")
+// });
 app.listen(PORT, () => {
-    console.log('Server is running : listening to port ' + PORT);
-})
+  console.log("Server is running : listening to port " + PORT);
+});
