@@ -12,7 +12,7 @@ const err = (c, m) => {
     UNAUTHORIZED: err(401, "you need to login first"),
     WORNG_PASSWORD: err(400, "password is not correct"),
     PASSWORDS_ARE_NOT_EQUAL: err(400, "passwords are not equal"),
-    TOKEN_DID_NOT_CREATED: err(401, "token didn't created"),
+    TOKEN_DID_NOT_CREATED: err(999, "token didn't created"),
     EVENT_NOT_FOUND: err(400, "event not found"),
     SETTING_NOT_FOUND: err(400, "setting not found"),
     CAN_NOT_GET_URL: err(999, "can't get url"),
