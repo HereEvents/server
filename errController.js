@@ -1,3 +1,5 @@
+const { sendMail } = require("./BL/emailInterface");
+
 const err = (c, m) => {
     return { code: c, message: m };
   };
@@ -12,7 +14,7 @@ const err = (c, m) => {
     UNAUTHORIZED: err(401, "you need to login first"),
     WORNG_PASSWORD: err(400, "password is not correct"),
     PASSWORDS_ARE_NOT_EQUAL: err(400, "passwords are not equal"),
-    TOKEN_DID_NOT_CREATED: err(401, "token didn't created"),
+    TOKEN_DID_NOT_CREATED: err(999, "token didn't created"),
     EVENT_NOT_FOUND: err(400, "event not found"),
     SETTING_NOT_FOUND: err(400, "setting not found"),
     CAN_NOT_GET_URL: err(999, "can't get url"),
@@ -21,8 +23,11 @@ const err = (c, m) => {
     IMG_CAN_NOT_BE_PROCESSED:err(999, "can't process image"),
   });
   
-  const sendError = (res, err) => {
+  const sendError = (res, err,userMail='') => {
     console.log(err);
+    if(err?.code !== 400 && err?.code !== 401)
+      sendMail(process.env.EROREMAIL,'error in server',`ERROR: ${err?.message||"try agien later"} 
+      user: ${userMail}`)
     res.status(err.code || 500).send(err.message || "try agien later");
   };
   module.exports = {
