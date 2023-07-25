@@ -182,7 +182,7 @@ eventRouter.post("/createvent", multiUpload, async (req, res) => {
       `${process.env.CLAIENT_DOMAIN}/viewEvent/${event._id}`
     );
   } catch (err) {
-    sendError(res, err);
+    sendError(res, err, dataEvent.advertiser.email.trim());
   }
 });
 
