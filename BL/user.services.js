@@ -9,13 +9,9 @@ const { default: axios } = require("axios");
 
 async function createUser(newUserData) {
       const user = await userController.findEmail(newUserData.email);
-      console.log(user);
       let newUser ={}
       if (!user) {
         newUser = await userController.create(newUserData);
-      } else if(!user.password){
-        changePassword(user.email,newUserData.password)
-        newUser ={ email: user.email, userType:user.userType };
       }
       else {
         newUser ={ error: `האימייל ${user.email} נמצא כבר בשימוש`, email: user.email, userType:user.userType };
@@ -27,11 +23,10 @@ async function createUser(newUserData) {
         { email: newUser.email, userType: newUser.userType },
         process.env.JWT_SECRET,
         { expiresIn: '1440h' });
-        console.log(token);
       return { user: newUser, token };
 
     } catch (error) {
-      console.error('Error generating Token:', err);
+      console.error('Error generating Token:', error);
       return { error: 'Error generating JWT token' };
     }
   } else {
