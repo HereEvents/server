@@ -35,17 +35,13 @@ async function createUser(newUserData) {
 }
 
 async function updateDetails(userForm, userToken) {
-  if (userToken.email == userForm.email) {
-    // Filter out empty string values from userForm
     const filteredData = {};
     for (const [key, value] of Object.entries(userForm)) {
       if (value !== '' && value!==undefined) {
         filteredData[key] = value;
       }
     }
-    return user = await userController.update(userForm.email, filteredData);
-  }
-  return;
+    return user = await userController.update(userToken.email, filteredData);
 }
 
 
