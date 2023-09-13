@@ -49,8 +49,8 @@ userRouter.get("/google-login", async (req, res) => {
       access_token,
     });
     if (!googleUser.res.verified_email) throw errMessage.FORBIDDEN;
-    if (!userController.readOne({ email: googleUser.res.email })) {
-       userToReturn = await userController.create({
+    if (!await userController.readOne({ email: googleUser.res.email })) {
+      userToReturn = await userController.create({
         email: googleUser.res.email,
         password: Date.now(),
         fullName: googleUser.res.name,
@@ -58,7 +58,6 @@ userRouter.get("/google-login", async (req, res) => {
     } else {
        userToReturn = await userController.readOne({ email: googleUser.res.email });
     }
-    console.log(userToReturn);
     const token = sign(
       { email: userToReturn.email, userType: userToReturn.userType },
       process.env.JWT_SECRET,
