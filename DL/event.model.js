@@ -24,10 +24,25 @@ const eventSchema = new mongoose.Schema({
       // require: true,
     },
   },
-  date: {
-    type: Date,
-    default: Date.now,
+  isReapeated: { type: Boolean, default: false },
+  repeatType: {
+    type: String,
   },
+  repeatTimes: { type: Number },
+  date: [
+    {
+      type: Date,
+    },
+  ],
+  deletedDate: [{ type: Date }],
+  days: [],
+  personalRepeat: { type: String },
+  repeatSettingsPersonal: {
+    type: { type: String },
+    dateEnd: { type: Object },
+    timesEnd: { type: Number },
+  },
+
   beginningTime: {
     type: String,
   },
@@ -38,61 +53,69 @@ const eventSchema = new mongoose.Schema({
     type: String,
     // require: true,
   },
-  category: [
+  accuratelocation: {
+    type: String,
+    // require: true,
+  },
+  categories: [
     {
-      type: mongoose.Schema.Types.ObjectID,
-      ref: "setting",
+      type: String,
+      //require: true,
     },
   ],
-  targetAudience: [
+  audiences: [
     {
-      type: mongoose.Schema.Types.ObjectID,
-      ref: "setting",
+      type: String,
+      //require: true,
     },
   ],
   registrationPageURL: {
     type: String,
-    require: false,
+    // require: false,
   },
   cardImageURL: {
     type: String,
-    require: true,
+    // require: true,
   },
   coverImageURL: {
     type: String,
     // require: true,
   },
+  payment: {
+    isFree: {
+      type: Boolean,
+      default: true,
+    },
+    price: {
+      type: Number,
+    },
+  },
   // gallery: [
   //   {
   //     imageURL: {
-  //       type: String,
+  //       type: Array,
   //       require: false,
   //     },
   //   },
   // ],
-  // type: {
-  //   type: String,
-  //   enum: ["one-time", "once-a-week", "once-a-month"],
-  //   default: "one-time",
-  // },
-  // payment: {
-  //   type: String,
-  //   enum: ["free", "in-payment"],
-  //   default: "free",
-  //   details: [
-  //     {
-  //       cardType: String,
-  //       price: Number,
-  //       require: false,
-  //     },
-  //   ],
-  //   require: false,
-  // },
-  // status: {
-  //   type: String,
-  //   enum: ["published", "waiting-for-approval", "invalid", "deleted"],
-  //   default: "waiting-for-approval",
-  // },
+  status: {
+    type: String,
+    enum: ["published", "waiting-for-approval", "invalid", "deleted"],
+    default: "waiting-for-approval",
+  },  
+  tag: {
+    type: String,
+    enum: ["event", "food", "attraction","noTag"],
+    default: "noTag",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  publishedAt: {
+    type: Date,
+    default: null,
+  },
 });
 
 const events = mongoose.model("event", eventSchema);

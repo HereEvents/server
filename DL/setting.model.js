@@ -13,6 +13,7 @@ const settingSchema = new mongoose.Schema ({
     },
     settingData : [
         {
+            _id: mongoose.Schema.Types.ObjectId,
             icon: {
                 type: String,
                 require: true

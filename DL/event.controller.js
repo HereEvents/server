@@ -1,16 +1,20 @@
 const { errMessage } = require("../errController");
 const eventsData = require("./event.model");
+const settingData = require("./setting.model");
 
 async function create(data) {
   return await eventsData.create(data);
 }
 
 async function read(filter) {
-  return await eventsData.find(filter).populate('setting.settingData');
+  if(filter) {
+    return await eventsData.find(filter).exec()
+  }
+  return await eventsData.find({})
 }
 
 async function readOne(filter) {
-  const res = await eventsData.findOne(filter).populate('setting.settingData');
+  const res = await eventsData.findOne(filter);
   if (!res) throw errMessage.EVENT_NOT_FOUND;
   return res;
 }
