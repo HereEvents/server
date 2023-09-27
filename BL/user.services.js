@@ -35,6 +35,7 @@ async function createUser(newUserData) {
 }
 
 async function updateDetails(userForm, userToken) {
+     // Filter out empty string values from userForm
     const filteredData = {};
     for (const [key, value] of Object.entries(userForm)) {
       if (value !== '' && value!==undefined) {
@@ -49,16 +50,11 @@ async function findUser(user) {
   const foundUser = await userController.find(user);
   if (foundUser) {
     try {
-      const isPasswordMatch = await bcrypt.compare(user.password, foundUser.password);
-      if (isPasswordMatch) {
         const token = jwt.sign(
           { email: user.email, userType: foundUser.userType },
           process.env.JWT_SECRET,
           { expiresIn: '1440h' });
         return { user: foundUser, token };
-      } else {
-        return ('סיסמא שגויה');
-      }
     } catch (err) {
       console.error('Error generating Token:', err);
       return { error: 'Error generating JWT token' };

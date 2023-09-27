@@ -30,8 +30,8 @@ try {
 
 userRouter.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await userServices.findUser({ email, password });
+    const { email } = req.body;
+    const user = await userServices.findUser({ email });
     res.status(200).send(user);
   } catch (err) {
     sendError(res, err);
@@ -52,7 +52,6 @@ userRouter.get("/google-login", async (req, res) => {
     if (!await userController.readOne({ email: googleUser.res.email })) {
       userToReturn = await userController.create({
         email: googleUser.res.email,
-        password: Date.now(),
         fullName: googleUser.res.name,
       })
     } else {
